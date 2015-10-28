@@ -10,9 +10,19 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var scrollView: UIScrollView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+
+        automaticallyAdjustsScrollViewInsets = false
+
+        if let toolbarHeight = self.navigationController?.toolbar.frame.height {
+            scrollView.contentInset.top = toolbarHeight
+        } else {
+            scrollView.contentInset.top = UIApplication.sharedApplication().statusBarFrame.height
+        }
     }
 
     override func didReceiveMemoryWarning() {
