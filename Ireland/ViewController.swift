@@ -15,13 +15,14 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print(scrollView.frame.width)
 
         automaticallyAdjustsScrollViewInsets = false
 
-        if let toolbarHeight = self.navigationController?.toolbar.frame.height {
-            scrollView.contentInset.top = toolbarHeight
-        } else {
-            scrollView.contentInset.top = UIApplication.sharedApplication().statusBarFrame.height
+        if self.navigationController?.toolbar.frame.height == nil {
+            if UIApplication.sharedApplication().statusBarHidden == false {
+                scrollView.contentInset.top = UIApplication.sharedApplication().statusBarFrame.height
+            }
         }
     }
 
@@ -30,6 +31,41 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        print("viewWillTransitionToSize")
+        if UIDevice.currentDevice().orientation.isLandscape.boolValue {
+            print("landscape")
+        } else {
+            print("portraight")
+        }
+        
+        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+    }
+/*
+    override func willTransitionToTraitCollection(newCollection: UITraitCollection, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+
+        if newCollection.verticalSizeClass == .Compact {
+            scrollView.contentInset.top = 0
+        } else {
+            scrollView.contentInset.top = UIApplication.sharedApplication().statusBarFrame.height
+            print(UIApplication.sharedApplication().statusBarFrame.height)
+        }
+        
+        super.willTransitionToTraitCollection(newCollection, withTransitionCoordinator: coordinator)
+    }
+  */
+
+    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        
+        if traitCollection.verticalSizeClass == .Compact {
+            scrollView.contentInset.top = 0
+        } else {
+            scrollView.contentInset.top = UIApplication.sharedApplication().statusBarFrame.height
+            //scrollView.contentOffset.y = -scrollView.contentInset.top
+        }
+    }
 
 }
 
